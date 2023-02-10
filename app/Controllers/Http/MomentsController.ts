@@ -2,7 +2,7 @@ import {v4 as uuidv4} from 'uuid'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import Moment from 'App/Models/Moment'
-import { Application } from '@adonisjs/core/build/standalone'
+import  Application  from '@ioc:Adonis/Core/Application'
 
 export default class MomentsController {
 
@@ -19,6 +19,11 @@ export default class MomentsController {
 
     if(image){
       const imageName = `${uuidv4()}.${image.extname}`
+
+      await image.move(Application.tmpPath('uploads'), {
+        name: imageName
+      })
+      body.image = imageName
     }
 
     const moment = await Moment.create(body)
