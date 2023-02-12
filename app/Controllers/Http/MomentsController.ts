@@ -10,7 +10,7 @@ export default class MomentsController {
     types: ['image'],
     size: '2mb'
   }
-
+  // store data
   public async store({request, response}: HttpContextContract){
 
     const body = request.body()
@@ -33,10 +33,25 @@ export default class MomentsController {
     return{message:'Momento criado com sucesso!!', data: moment}
   }
 
+  // return all data
+
   public async index() {
     const moments = await Moment.all()
 
     return{data:moments}
+  }
+  // return data by ID
+  public async show({params}: HttpContextContract){
+    const moment = await Moment.findOrFail(params.id)
+
+    return{data: moment}
+  }
+
+  // delete data
+  public async destroy({params}: HttpContextContract){
+    const moment = await Moment.findOrFail(params.id)
+    await moment.delete()
+    return{message:'Momento deletado',data: moment}
   }
 }
 
